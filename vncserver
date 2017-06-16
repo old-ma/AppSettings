@@ -1,0 +1,52 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          vncserver
+# Required-Start:    $remote_fs $all
+# Required-Stop:
+# Default-Start:     2 3 4 5
+# Default-Stop:
+# Short-Description: Setup vnc server
+### END INIT INFO
+
+
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
+
+. /lib/init/vars.sh
+. /lib/lsb/init-functions
+
+
+export USER="root"
+
+# The display that VNC will use
+DISPLAY="1"
+
+# Color depth (between 8 and 32)
+DEPTH="32"
+
+# The Desktop geometry to use.
+#GEOMETRY="<WIDTH>x<HEIGHT>"
+#GEOMETRY="800x600"
+#GEOMETRY="1024x768"
+#GEOMETRY="1280x1024"
+GEOMETRY="1600x900"
+
+# The name that the VNC Desktop will have.
+NAME="my-vnc-server"
+
+OPTIONS="-name ${NAME} -depth ${DEPTH} -geometry ${GEOMETRY} :${DISPLAY}"
+
+case "$1" in
+	start)
+    #su ${USER} -c "/opt/TurboVNC/bin/vncserver" 
+	su ${USER} -c "/usr/bin/vncserver ${OPTIONS}"
+		;;
+	
+	stop)
+	#su ${USER} -c "/opt/TurboVNC/bin/vncserver -kill :${DISPLAY}"
+	su ${USER} -c "/usr/bin/vncserver -kill :${DISPLAY}"
+		;;
+	
+	*)
+	echo $"Usage: $0 {start|stop|restart}"
+	exit 1
+esac
